@@ -1,4 +1,4 @@
-var myApp = angular.module('myApp', ['ngRoute']);
+var myApp = angular.module('myApp', ['ngRoute','ui.bootstrap']);
 
 myApp.config(['$routeProvider', function($routeProvider) {
 
@@ -9,10 +9,10 @@ myApp.config(['$routeProvider', function($routeProvider) {
           controller: 'HomeController',
           controllerAs: 'home'
         })
-        .when ('/view-1', {
-            templateUrl: '/views/view_1.html',
-            controller: 'OneController',
-            controllerAs: 'one'
+        .when ('/upload', {
+            templateUrl: '/views/upload.html',
+            controller: 'UploadController',
+            controllerAs: 'uc'
         })
         .when ('/view-2', {
             templateUrl: '/views/view_2.html',

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>AWS SDK for JavaScript - Sample Application</title>
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1.12.min.js"></script> // sources in SDK
+</head>
+<body>
+    <input type="file" id="file-chooser" /> // instantiates the browser file chooser
+    <button id="upload-button" style="display:none">Upload to S3</button> // Simple button, not the CSS rule telling it to not display for now
+    <div id="results"></div> // holding container for the result text later on in the script
+
+    <div id="fb-root"></div>
+
+    <script type="text/javascript">
+        var appId = '147910642417941'; // filled in from the FB App
+        var roleArn = 'arn:aws:iam::455790677231:role/JS-SDK-IAM-ROLE'; // copied from the IAM panel
+        var bucketName = 'sofa-apple-tree'; //bucket name from S3 console
+        AWS.config.region = 'us-east-2'; // first instance of working with the SDK.  We are setting the region for our bucket here.
+        var fbUserId; // instantiating the varibale to store the FB Identiry when we log in
+        var bucket = new AWS.S3({  // instantiating the AWS.S3 object and setting the name
+            params: {
+                Bucket: bucketName
+            }
+        });
+
+        // sets our DOM elements
+
+        var fileChooser = document.getElementById('file-chooser'); // sets the variable as the object retrieved from the file-chooser element.
+        var button = document.getElementById('upload-button');  // sets the variable as the upload button for further use in the script
+        var results = document.getElementById('results'); // sets the varibale for our results div
+        button.addEventListener('click', function () { // setup the click listener for our button
+
+            var file = fileChooser.files[0]; // get's the first file we select in our file picker.  More info here: https://developer.mozilla.org/en-US/docs/Using_files_from_web_applications
+            if (file) { // if we have a file, this will be true and the codeblock will execute
+                results.innerHTML = ''; // instantiate the text will add to the 'results' div
+
+                //Object key will be facebook-USERID#/FILE_NAME.  What's an Object Key?
+
+                var objKey = 'facebook-' + fbUserId + '/' + file.name; // the Object key will be constructed with the static text and the dynamic ID assigned to the Facebook-authenticated user
+
+                // params will build out the S3 API request for us.  THis is major.
+                var params = {
+                    Key: objKey, // our dynamically generated object key
+                    ContentType: file.type, // picks up the file type. Again, very important for the API to know this
+                    Body: file,
+                    ACL: 'public-read' // sets the Access Control on the object.  Full listing is here
+                };
+                bucket.putObject(params, function (err, data) { //.putObject() is the method we want to call, passing in our params and adding a callback anonymous function.  If we get an error, the error will appear in the results Div, other wise, we will execute listObjs() when the putObject() method is successfull.  listObjs() is a function defined specifcally for this app.  See below.
+
+                    if (err) {
+                        results.innerHTML = 'ERROR: ' + err;
+                    } else {
+                        listObjs();
+                    }
+                });
+            } else {
+                results.innerHTML = 'Nothing to upload.';
+            }
+        }, false);
+
+        // custom function that will enumerate the files that match the prefix string.  The prefix string will again be a combination of some static text and my Facebook user ID.  The prefix string is a way to organize files in AWS.  There is no concept of a folder, so Amazon prefixes file names with this value to create a type of 'virtual' folder.
+
+        function listObjs() {
+            var prefix = 'facebook-' + fbUserId;
+            bucket.listObjects({
+
+              // list all objects in the bucket with the same prefix. In other words, our "folder" listing
+
+                Prefix: prefix
+            }, function (err, data) { // executes our call back function
+                if (err) {
+                    results.innerHTML = 'ERROR: ' + err; // error handling to report any errors that are encountered
+                } else {
+                    var objKeys = ""; // clears out the objKeys variable
+                    data.Contents.forEach(function (obj) {  // creates a string for the listing of each object in our bucket with the same FB prefix
+                        objKeys += obj.Key + "<br>";
+                    });
+                    results.innerHTML = objKeys; // injects each file listing into the 'results' div
+                }
+            });
+        }
+        /*!
+         * Login to your application using Facebook.
+         * Uses the Facebook SDK for JavaScript available here:
+         * https://developers.facebook.com/docs/javascript/gettingstarted/
+         */
+        window.fbAsyncInit = function () {
+            FB.init({
+                appId: appId
+            });
+            FB.login(function (response) {
+                bucket.config.credentials = new AWS.WebIdentityCredentials({
+                    ProviderId: 'graph.facebook.com',
+                    RoleArn: roleArn,
+                    WebIdentityToken: response.authResponse.accessToken
+                });
+                fbUserId = response.authResponse.userID;
+                button.style.display = 'block'; // this will finally light up the button when you're logged in
+            });
+        };
+         // Load the Facebook SDK asynchronously
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) {
+                return;
+            }
+            js = d.createElement(s);
+            js.id = id;
+            js.src = "//connect.facebook.net/en_US/all.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    </script>
+
+</body>
+
+</html>
