@@ -1,12 +1,12 @@
-myApp.controller('LoginController',['DataFactory', '$uibModal', '$log', '$document' function(DataFactory, $uibModal, $log, $document) {
+myApp.controller('NavController',['DataFactory', '$uibModal', '$log', '$document', function(DataFactory, $uibModal, $log, $document) {
 
-  var self = this;
-
+  var self = this;  
   self.animationsEnabled = true;
 
-  console.log('Login controller running');
+  console.log('Nav controller running');
 
   self.open = function (size, parentSelector) {
+    console.log('Login Button Clicked');
     var parentElem = parentSelector ?
       angular.element($document[0].querySelector('.modal-demo ' + parentSelector)) : undefined;
     var modalInstance = $uibModal.open({
@@ -24,6 +24,6 @@ myApp.controller('LoginController',['DataFactory', '$uibModal', '$log', '$docume
         }
       }
     });
-
+  }
 
 }]);

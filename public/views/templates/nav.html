@@ -1,6 +1,6 @@
 <!--the hashbang stuff goes here-->
 
-  <ul class="nav nav-tabs">
+  <ul class="nav nav-tabs" ng-contorller="NavController">
     <li class="nav-item">
       <a class="nav-link" href="#!home">Home</a>
     </li>
@@ -9,5 +9,10 @@
     </li>
     <li class="nav-item">
       <a class="nav-link" href="#!view-2">View 2</a>
+    </li>
+    <li class="nav-item">
+      <div ng-controller="LoginController">
+        <button type="button" class="btn btn-default" id="login-button" ng-click="NavController.open('sm')">Login</button>
+      </div>
     </li>
   </ul>
