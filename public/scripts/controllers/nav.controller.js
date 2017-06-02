@@ -10,6 +10,7 @@ myApp.controller('NavController',['DataFactory', '$uibModal', '$log', '$document
 
   self.open = function (size) {
     console.log('Login Button Clicked');
+    console.log('$uibModal is: ', $uiBmodal);
     var modalInstance = $uibModal.open({
       animation: self.animationsEnabled,
       ariaLabelledBy: 'modal-title',
@@ -25,6 +26,13 @@ myApp.controller('NavController',['DataFactory', '$uibModal', '$log', '$document
       //   }
       // }
     });
-  }
+
+    modalInstance.result.then(function (selectedItem) {
+      self.selected = selectedItem;
+    }, function () {
+      $log.info('Modal dismissed at: ' + new Date());
+    });
+  };
+
 
 }]);

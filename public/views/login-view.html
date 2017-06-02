@@ -1,12 +1,12 @@
 <div modal="showModal" close="cancel()">
     <div class="modal-header">
-        <h4>Modal Dialog</h4>
+        <h4>Log In</h4>
     </div>
     <div class="modal-body">
-        <p>Example paragraph with some text.</p>
+        <p>Example paragraph with some <span>{{lc.testText}}</span>.</p>
     </div>
     <div class="modal-footer">
-      <button class="btn btn-success" ng-click="ok()">Okay</button>
-      <button class="btn" ng-click="cancel()">Cancel</button>
+      <button class="btn btn-success" ng-click="lc.ok()">Okay</button>
+      <button class="btn" ng-click="$dismiss()">Cancel</button>
     </div>
   </div>
