@@ -1,14 +1,15 @@
 myApp.controller('NavController',['DataFactory', '$uibModal', '$log', '$document', function(DataFactory, $uibModal, $log, $document) {
 
-  var self = this;  
+  var self = this;
+  console.log('Nav Contoller running...');
   self.animationsEnabled = true;
+  self.testText = 'Test Text';
+  self.testMessage = function(){
+    console.log('test message for button click');
+  };
 
-  console.log('Nav controller running');
-
-  self.open = function (size, parentSelector) {
+  self.open = function (size) {
     console.log('Login Button Clicked');
-    var parentElem = parentSelector ?
-      angular.element($document[0].querySelector('.modal-demo ' + parentSelector)) : undefined;
     var modalInstance = $uibModal.open({
       animation: self.animationsEnabled,
       ariaLabelledBy: 'modal-title',
@@ -16,13 +17,13 @@ myApp.controller('NavController',['DataFactory', '$uibModal', '$log', '$document
       templateUrl: '/views/login-view.html',
       controller: 'LoginController',
       controllerAs: 'lc',
-      size: size,
-      appendTo: parentElem,
-      resolve: {
-        items: function () {
-          return $ctrl.items;
-        }
-      }
+      size: size
+      // appendTo: parentElem
+      // resolve: {
+      //   items: function () {
+      //     return $ctrl.items;
+      //   }
+      // }
     });
   }
 
