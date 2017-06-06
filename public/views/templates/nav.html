@@ -11,9 +11,12 @@
       <a class="nav-link" href="#!view-2">View 2</a>
     </li>
     <li class="nav-item">
-        <button type="button" class="btn btn-default" id="login-button" ng-click="nc.open('sm')">Login</button>
+        <button type="button" class="btn btn-primary" id="login-button" ng-hide="nc.fbUser.status" ng-click="nc.open('sm')">Login</button>
       </li>
     <li class="nav-item">
-        <a class=nav-link>{{nc.testText}}</a>
+        <button type="button" class="btn btn-info" id="login-button" ng-show="nc.fbUser.status" ng-click="nc.logout()">Logout</button>
+      </li>
+    <li class="nav-item">
+        <a class=nav-link>{{nc.fbUser.status}}</a>
     </li>
   </ul>

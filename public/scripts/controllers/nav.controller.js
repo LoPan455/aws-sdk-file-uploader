@@ -3,10 +3,7 @@ myApp.controller('NavController',['DataFactory', '$uibModal', '$log', '$document
   var self = this;
   console.log('Nav Contoller running...');
   self.animationsEnabled = true;
-  self.testText = 'Test Text';
-  self.testMessage = function(){
-    console.log('test message for button click');
-  };
+  self.fbUser = DataFactory.currentUser.details; // initializes empty object to hold the FB user obj
 
   self.open = function (size) {
     console.log('Login Button Clicked');
@@ -19,7 +16,8 @@ myApp.controller('NavController',['DataFactory', '$uibModal', '$log', '$document
       controller: 'LoginController',
       controllerAs: 'lc',
       bindToContoller: 'true',
-      size: size
+      size: size,
+      keyboard: 'true'
       // appendTo: parentElem
       // resolve: {
       //   items: function () {
@@ -28,8 +26,9 @@ myApp.controller('NavController',['DataFactory', '$uibModal', '$log', '$document
       // }
     });
 
-    modalInstance.result.then(function (selectedItem) {
-      self.selected = selectedItem;
+    modalInstance.result.then(function(response) {
+      self.fbUser = response;
+      console.log(self.fbUser);
     }, function () {
       $log.info('Modal dismissed at: ' + new Date());
     });
