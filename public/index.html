@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="/css/styles.css" />
     <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1.12.min.js"></script>
     <!-- <script src="/scripts/aws.js" charset="utf-8"></script> -->
-    <!-- <script src="/scripts/fb.js" charset="utf-8"></script> -->
+
     <script type="text/javascript" src="/vendor/angular.min.js"></script>
     <script type="text/javascript" src="/vendor/angular-route.min.js"></script>
     <script type="text/javascript"  src="/vendor/ui-bootstrap-tpls.js"></script>
@@ -19,12 +19,37 @@
     <script type="text/javascript" src="/scripts/controllers/login.controller.js"></script>
     <script type="text/javascript" src="/scripts/controllers/upload.controller.js"></script>
     <script type="text/javascript" src="/scripts/controllers/two.controller.js"></script>
+    <!-- <script src="/scripts/fb.js" charset="utf-8"></script> -->
 </head>
 <body ng-app="myApp">
+
+  <!-- /* Initialize the Facebook App */ -->
+
+  <div id="fb-root"></div>
+  <script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '147910642417941',
+      xfbml      : true,
+      version    : 'v2.9'
+    });
+    FB.AppEvents.logPageView();
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+
+  <!-- /* Initialize the rest of the app */ -->
+
   <header class="jumbotron text-center" ng-include="'/views/templates/header.html'"></header>
   <nav ng-include="'/views/templates/nav.html'"></nav>
   <main ng-view></main>
 </body>
-
 
 </html>

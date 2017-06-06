@@ -10,7 +10,7 @@ myApp.controller('NavController',['DataFactory', '$uibModal', '$log', '$document
 
   self.open = function (size) {
     console.log('Login Button Clicked');
-    console.log('$uibModal is: ', $uiBmodal);
+
     var modalInstance = $uibModal.open({
       animation: self.animationsEnabled,
       ariaLabelledBy: 'modal-title',
@@ -18,6 +18,7 @@ myApp.controller('NavController',['DataFactory', '$uibModal', '$log', '$document
       templateUrl: '/views/login-view.html',
       controller: 'LoginController',
       controllerAs: 'lc',
+      bindToContoller: 'true',
       size: size
       // appendTo: parentElem
       // resolve: {

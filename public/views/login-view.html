@@ -3,10 +3,12 @@
         <h4>Log In</h4>
     </div>
     <div class="modal-body">
-        <p>Example paragraph with some <span>{{lc.testText}}</span>.</p>
+      <div id="fb-login-button" class="fb-login-button" data-width="298" data-max-rows="1" data-size="small" data-button-type="login_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false" ng-click="lc.fbLogin()" data-dismiss="modal">
+        <img src="/assets/images/facebook-login.png" style="height: 100%; width: 100%; object-fit: contain" />
+
+     </div>
     </div>
     <div class="modal-footer">
-      <button class="btn btn-success" ng-click="lc.ok()">Okay</button>
-      <button class="btn" ng-click="$dismiss()">Cancel</button>
+      <button class="btn" ng-click="$dismiss('Cancelled by user')">Cancel</button>
     </div>
   </div>
