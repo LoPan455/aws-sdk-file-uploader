@@ -5,10 +5,30 @@ myApp.controller('NavController',['DataFactory', '$uibModal', '$log', '$document
   self.animationsEnabled = true;
   self.fbUser = DataFactory.currentUser.details; // initializes empty object to hold the FB user obj
 
-  self.open = function (size) {
-    console.log('Login Button Clicked');
+  self.upload = function(size){
+    console.log('Upload Button Clicked');
+    var uploadModalInstance = $uibModal.open({
+      animation: self.animationsEnabled,
+      ariaLabelledBy: 'modal-title',
+      ariaDescribedBy: 'modal-body',
+      templateUrl: '/views/templates/upload.html',
+      controller: 'UploadController',
+      controllerAs: 'ulc',
+      backdrop: 'false',
+      bindToContoller: 'true',
+      size: size,
+      keyboard: 'true'
+    });
+    uploadModalInstance.result.then(function (reason) {
+      console.log('modal closed with:', reason);
+    }, function () {
+      $log.info('Modal dismissed at: ' + new Date());
+    });
+  };
 
-    var modalInstance = $uibModal.open({
+  self.login = function (size) {
+    console.log('Login Button Clicked');
+    var loginModalInstance = $uibModal.open({
       animation: self.animationsEnabled,
       ariaLabelledBy: 'modal-title',
       ariaDescribedBy: 'modal-body',
@@ -18,15 +38,9 @@ myApp.controller('NavController',['DataFactory', '$uibModal', '$log', '$document
       bindToContoller: 'true',
       size: size,
       keyboard: 'true'
-      // appendTo: parentElem
-      // resolve: {
-      //   items: function () {
-      //     return $ctrl.items;
-      //   }
-      // }
     });
 
-    modalInstance.result.then(function(response) {
+    loginModalInstance.result.then(function(response) {
       self.fbUser = response;
       console.log(self.fbUser);
     }, function () {
